@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject NotificationService NotificationService
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -9,8 +11,30 @@
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
 
+        <div>
+            @if (!string.IsNullOrEmpty(notificationMessage))
+            {
+                <div class="alert alert-info">@notificationMessage</div>
+            }
+        </div>
+
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+@code {
+    private string notificationMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        NotificationService.OnNotificationReceived += message =>
+        {
+            notificationMessage = message;
+            InvokeAsync(StateHasChanged);
+        };
+
+        await NotificationService.StartAsync();
+    }
+}
