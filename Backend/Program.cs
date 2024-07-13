@@ -2,7 +2,6 @@ using Backend.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -63,6 +62,15 @@ namespace Backend
             app.UseAuthorization();
             
             app.MapControllers();
+
+            // seed users and roles
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                RoleInitializer.InitializeAsync(userManager, roleManager).Wait();
+            }
 
             app.Run();
         }
