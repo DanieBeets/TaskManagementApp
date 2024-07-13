@@ -12,18 +12,18 @@ namespace Backend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            builder.Services.AddDbContext<TaskManagementDbContext>(
-                options => options.UseSqlite(builder.Configuration.GetConnectionString("TaskManagementConnection")));
-            
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<TaskManagementDbContext>()
-                .AddDefaultTokenProviders();
-            
+
             var jwtIssuer = builder.Configuration["Jwt:Issuer"]?.ToString() ?? throw new Exception("'Jwt:Issuer' is missing from the configuration file");
             var jwtAudience = builder.Configuration["Jwt:Audience"]?.ToString() ?? throw new Exception("'Jwt:Audience' is missing from the configuration file");
             var jwtKey = builder.Configuration["Jwt:Key"]?.ToString() ?? throw new Exception("'Jwt:Key' is missing from the configuration file");
 
+            builder.Services.AddDbContext<AppDbContext>(
+                options => options.UseSqlite(builder.Configuration.GetConnectionString("TaskManagementConnection")));
+            
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+                        
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

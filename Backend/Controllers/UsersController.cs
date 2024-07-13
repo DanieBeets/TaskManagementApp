@@ -8,9 +8,9 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController(TaskManagementDbContext appDbContext) : ControllerBase
+    public class UsersController(AppDbContext appDbContext) : ControllerBase
     {
-        private readonly TaskManagementDbContext _appDbContext = appDbContext;
+        private readonly AppDbContext _appDbContext = appDbContext;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskDTO>>> GetUsers()

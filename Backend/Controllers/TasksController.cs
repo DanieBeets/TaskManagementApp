@@ -8,9 +8,9 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TasksController(TaskManagementDbContext appDbContext) : ControllerBase
+    public class TasksController(AppDbContext appDbContext) : ControllerBase
     {
-        private readonly TaskManagementDbContext _appDbContext = appDbContext;
+        private readonly AppDbContext _appDbContext = appDbContext;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskDTO>>> GetTasks(
@@ -22,7 +22,7 @@ namespace Backend.Controllers
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                query = query.Where(t => t.Title.Contains(search) || t.Description.Contains(search));
+                query = query.Where(t => t.Title.Contains(search) || (t.Description != null && t.Description.Contains(search)));
             }
 
             if (!string.IsNullOrWhiteSpace(priority))
@@ -142,7 +142,7 @@ namespace Backend.Controllers
         }
 
         [HttpPut("{id}/assign")]
-        public async Task<IActionResult> AssignTask(int id, [FromBody] string userId)
+        public async Task<IActionResult> AssignTask(int id, [FromBody] int userId)
         {
             var task = await _appDbContext.Tasks.FindAsync(id);
 

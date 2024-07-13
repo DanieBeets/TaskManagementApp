@@ -54,7 +54,7 @@ namespace Frontend.Services
             await _httpClient.DeleteAsync($"api/tasks/{id}");
         }
 
-        public async Task AssignTask(int taskId, string userId)
+        public async Task AssignTask(int taskId, int userId)
         {
             await _httpClient.PostAsJsonAsync(
                 "api/tasks/assign",
