@@ -24,6 +24,25 @@
     </main>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <NavMenu />
+        </div>
+        <div class="col-md-9">
+            <div>
+                @if (!string.IsNullOrEmpty(notificationMessage))
+                {
+                    <div class="alert alert-info">@notificationMessage</div>
+                }
+            </div>
+            <main>
+                @Body
+            </main>
+        </div>
+    </div>
+</div>
+
 @code {
     private string notificationMessage = string.Empty;
 
