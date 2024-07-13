@@ -10,17 +10,17 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController(
+    public class AuthenticationController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
-        Logger<AuthController> logger,
+        Logger<AuthenticationController> logger,
         IConfiguration configuration) : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager = userManager;
 
         private readonly SignInManager<IdentityUser> _signInManager = signInManager;
 
-        private readonly ILogger<AuthController> _logger = logger;
+        private readonly ILogger<AuthenticationController> _logger = logger;
 
         private readonly IConfiguration _configuration = configuration;
 
