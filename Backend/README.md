@@ -3,17 +3,14 @@
 The task management app backend API
 
 # Running Database Migrations From VS2022
-Ensure that you have a reference to 'Microsoft.EntityFrameworkCore.Tools'. Then from package manager console run:
+Ensure that you have a reference to 'Microsoft.EntityFrameworkCore.Tools'.
 
 ```
-Add-Migration <MigrationName>
+Add-Migration -Context TaskManagementDbContext -Name "MigrationName" -OutputDir "Data/Migrations"
 Update-Database
 ```
 
-# Running Database Migrations From CLI
-From a terminal run:
-
+# Script Migrations
 ```
-dotnet ef migrations add <MigrationName>
-dotnet ef database update
+Script-Migration -Context TaskManagementDbContext
 ```
