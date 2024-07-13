@@ -1,16 +1,23 @@
 ﻿using Backend.Data;
 using Backend.Data.Models;
+using Backend.Services;
 using Common.DTOs.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TasksController(AppDbContext appDbContext) : ControllerBase
+    public class TasksController(
+        AppDbContext appDbContext,
+        AuditService auditService) : ControllerBase
     {
         private readonly AppDbContext _appDbContext = appDbContext;
+
+        private readonly AuditService _auditService = auditService;        
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskDTO>>> GetTasks(
@@ -93,6 +100,8 @@ namespace Backend.Controllers
 
             await _appDbContext.SaveChangesAsync();
 
+            await _auditService.LogAsync(User.GetUserId(), "Create", "Task", task.Id, null);
+
             return CreatedAtAction(nameof(GetTask), new { id = task.Id }, task);
         }
 
@@ -121,6 +130,8 @@ namespace Backend.Controllers
 
             await _appDbContext.SaveChangesAsync();
 
+            await _auditService.LogAsync(User.GetUserId(), "Update", "Task", task.Id, null);
+
             return NoContent();
         }
 
@@ -137,10 +148,13 @@ namespace Backend.Controllers
             _appDbContext.Tasks.Remove(task);
 
             await _appDbContext.SaveChangesAsync();
+            
+            await _auditService.LogAsync(User.GetUserId(), "Delete", "Task", task.Id, null);
 
             return NoContent();
         }
 
+        // TODO - this should be done in update
         [HttpPut("{id}/assign")]
         public async Task<IActionResult> AssignTask(int id, [FromBody] int userId)
         {
@@ -155,9 +169,11 @@ namespace Backend.Controllers
 
             _appDbContext.Entry(task).State = EntityState.Modified;
 
-            await _appDbContext.SaveChangesAsync();
+            await _appDbContext.SaveChangesAsync();            
+            
+            await _auditService.LogAsync(User.GetUserId(), "Assign", "Task", task.Id, $"Task assigned to user {userId}");
 
             return NoContent();
-        }
+        }        
     }
 }

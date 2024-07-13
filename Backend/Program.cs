@@ -1,6 +1,7 @@
 using Backend.Data;
 using Backend.Data.Models;
 using Backend.Hubs;
+using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,8 @@ namespace Backend
             var jwtIssuer = builder.Configuration["Jwt:Issuer"]?.ToString() ?? throw new Exception("'Jwt:Issuer' is missing from the configuration file");
             var jwtAudience = builder.Configuration["Jwt:Audience"]?.ToString() ?? throw new Exception("'Jwt:Audience' is missing from the configuration file");
             var jwtKey = builder.Configuration["Jwt:Key"]?.ToString() ?? throw new Exception("'Jwt:Key' is missing from the configuration file");
+
+            builder.Services.AddScoped<AuditService>();
 
             builder.Services.AddDbContext<AppDbContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("TaskManagementConnection")));
