@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Models.Auth
+namespace Backend.DTOs.Authentication
 {
-    public class SignIn
+    public class RegisterDTO
     {
         [Required]
         public required string Email { get; set; }

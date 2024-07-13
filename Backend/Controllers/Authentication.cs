@@ -1,4 +1,4 @@
-﻿using Backend.Models.Auth;
+﻿using Backend.DTOs.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -25,7 +25,7 @@ namespace Backend.Controllers
         private readonly IConfiguration _configuration = configuration;
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] Register model)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -51,7 +51,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<IActionResult> SignIn([FromBody] SignIn model)
+        public async Task<IActionResult> SignIn([FromBody] SignInDTO model)
         {
             if (!ModelState.IsValid)
             {

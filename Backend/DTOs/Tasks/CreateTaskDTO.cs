@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Backend.DTOs
+namespace Backend.DTOs.Tasks
 {
-    public class UpdateTaskDTO
-    {        
-        [Required]
-        public int Id { get; set; }
-
+    public class CreateTaskDTO
+    {
         [Required]
         public required string Title { get; set; }
 
@@ -17,8 +14,5 @@ namespace Backend.DTOs
 
         [Required]
         public required string Priority { get; set; }
-
-        [Required]
-        public required string Status { get; set; }        
     }
 }

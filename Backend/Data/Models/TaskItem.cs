@@ -1,4 +1,6 @@
-﻿namespace Backend.Data.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Backend.Data.Models
 {
     public class TaskItem
     {
@@ -13,5 +15,9 @@
         public string Priority { get; set; }
 
         public string Status { get; set; }
+
+        public string AssignedUserId { get; set; }
+
+        public IdentityUser AssignedUser { get; set; }
     }
 }
