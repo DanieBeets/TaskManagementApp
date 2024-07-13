@@ -6,15 +6,15 @@ The task management app backend API
 Ensure that you have a reference to 'Microsoft.EntityFrameworkCore.Tools'.
 
 ```
-Add-Migration -Context TaskManagementDbContext -Name "MigrationName" -OutputDir "Data/Migrations"
+Add-Migration -Context AppDbContext -Name "MigrationName" -OutputDir "Data/Migrations"
 Update-Database
 ```
 
 # Script Migrations
 ```
-Script-Migration -Context TaskManagementDbContext
+Script-Migration -Context AppDbContext
 ```
 
 # TODO
-- Double check nullability of Data Models, API Models and API DTOs
+- Double check property nullability of Data Models, API Models and DTOs
 - Paging for tasks
