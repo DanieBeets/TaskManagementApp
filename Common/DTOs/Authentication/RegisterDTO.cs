@@ -5,9 +5,9 @@ namespace Common.DTOs.Authentication
     public class RegisterDTO
     {
         [Required]
-        public required string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
-        public required string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

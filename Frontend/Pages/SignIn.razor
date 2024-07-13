@@ -1,0 +1,31 @@
+﻿@page "/signin"
+@using Common.DTOs.Authentication
+@using Frontend.Services
+@inject AuthenticationService AuthenticationService
+@inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject CustomAuthenticationStateProvider AuthStateProvider
+
+<EditForm Model="signInDTO" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText id="email" @bind-Value="signInDTO.Email" />
+    <InputText id="password" type="password" @bind-Value="signInDTO.Password" />
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    private SignInDTO signInDTO = new SignInDTO();
+
+    private async Task HandleLogin()
+    {
+        var token = await AuthenticationService.SignIn(signInDTO);
+        
+        // TODO - get authToken string from Constants class 
+        await LocalStorage.SetItemAsStringAsync("authToken", token);
+        
+        await AuthStateProvider.MarkUserAsAuthenticatedAsync(token);
+
+        Navigation.NavigateTo("/");
+    }
+}

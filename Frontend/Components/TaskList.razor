@@ -1,4 +1,6 @@
 ﻿@inject HttpClient HttpClient
+@inject NavigationManager Navigation
+@using Common.DTOs.Tasks
 
 <h3>Tasks</h3>
 
@@ -32,11 +34,12 @@
 </table>
 
 @code {
-    private List<TaskDto> tasks = new List<TaskDto>();
+    private List<TaskDTO> tasks = new List<TaskDTO>();
 
     protected override async Task OnInitializedAsync()
     {
-        tasks = await HttpClient.GetFromJsonAsync<List<TaskDto>>("api/tasks");
+        // TODO - error handling
+        tasks = await HttpClient.GetFromJsonAsync<List<TaskDTO>>("api/tasks");
     }
 
     private void EditTask(int id)
@@ -47,6 +50,8 @@
     private async Task DeleteTask(int id)
     {
         await HttpClient.DeleteAsync($"api/tasks/{id}");
-        tasks = await HttpClient.GetFromJsonAsync<List<TaskDto>>("api/tasks");
+
+        // TODO - error handling
+        tasks = await HttpClient.GetFromJsonAsync<List<TaskDTO>>("api/tasks");
     }
 }

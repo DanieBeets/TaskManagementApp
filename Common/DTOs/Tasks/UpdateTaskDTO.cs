@@ -8,7 +8,7 @@ namespace Common.DTOs.Tasks
         public int Id { get; set; }
 
         [Required]
-        public required string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         public string? Description { get; set; }
 
@@ -16,9 +16,9 @@ namespace Common.DTOs.Tasks
         public DateTime DueDate { get; set; }
 
         [Required]
-        public required string Priority { get; set; }
+        public string Priority { get; set; } = string.Empty;
 
         [Required]
-        public required string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
     }
 }

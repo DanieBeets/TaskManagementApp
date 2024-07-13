@@ -1,21 +1,23 @@
 ﻿@page "/register"
-@inject AuthService AuthService
+@inject AuthenticationService AuthenticationService
 @inject NavigationManager Navigation
+@using Common.DTOs.Authentication
 
-<EditForm Model="registerModel" OnValidSubmit="HandleRegister">
+<EditForm Model="registerDTO" OnValidSubmit="HandleRegister">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <InputText id="email" @bind-Value="registerModel.Email" />
-    <InputText id="password" type="password" @bind-Value="registerModel.Password" />
+    <InputText id="email" @bind-Value="registerDTO.Email" />
+    <InputText id="password" type="password" @bind-Value="registerDTO.Password" />
     <button type="submit">Register</button>
 </EditForm>
 
 @code {
-    private RegisterModel registerModel = new RegisterModel();
+    private RegisterDTO registerDTO = new RegisterDTO();
 
     private async Task HandleRegister()
     {
-        await AuthService.Register(registerModel);
-        Navigation.NavigateTo("/login");
+        await AuthenticationService.Register(registerDTO);
+
+        Navigation.NavigateTo("/signin");
     }
 }

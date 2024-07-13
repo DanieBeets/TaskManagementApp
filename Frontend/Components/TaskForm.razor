@@ -1,4 +1,5 @@
 ﻿@page "/task/edit/{id:int}"
+@using Common.DTOs.Tasks
 @inject TaskService TaskService
 @inject NavigationManager Navigation
 
@@ -22,8 +23,10 @@
 </EditForm>
 
 @code {
-    [Parameter] public int Id { get; set; }
-    private UpdateTaskDto task = new UpdateTaskDto();
+    [Parameter] 
+    public int Id { get; set; }
+
+    private TaskDTO task = new TaskDTO();
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,12 +40,30 @@
     {
         if (Id == 0)
         {
-            await TaskService.CreateTask(task);
+            var ct = new CreateTaskDTO
+                {
+                    Title = task.Title,
+                    Description = task.Description,
+                    DueDate = task.DueDate,
+                    Priority = task.Priority
+                };
+
+            await TaskService.CreateTask(ct);
         }
         else
         {
-            await TaskService.UpdateTask(Id, task);
+            var ut = new UpdateTaskDTO
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    DueDate = task.DueDate,
+                    Priority = task.Priority
+                };
+
+            await TaskService.UpdateTask(Id, ut);
         }
+
         Navigation.NavigateTo("/");
     }
 }
