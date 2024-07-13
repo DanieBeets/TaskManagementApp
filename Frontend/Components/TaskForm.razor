@@ -1,5 +1,6 @@
 ﻿@page "/task/edit/{id:int}"
 @using Common.DTOs.Tasks
+@using Common.DTOs.Users
 @inject TaskService TaskService
 @inject NavigationManager Navigation
 
@@ -19,6 +20,13 @@
         <option value="In Progress">In Progress</option>
         <option value="Completed">Completed</option>
     </InputSelect>
+    <label for="assignedUser">Assigned User:</label>
+    <select id="assignedUser" @bind="task.AssignedUserId">
+        @foreach (var user in users)
+        {
+            <option value="@user.Id">@user.Name</option>
+        }
+    </select>
     <button type="submit">Save</button>
 </EditForm>
 
@@ -28,12 +36,16 @@
 
     private TaskDTO task = new TaskDTO();
 
+    private List<UserDTO> users = new List<UserDTO>();
+
     protected override async Task OnInitializedAsync()
     {
         if (Id != 0)
         {
             task = await TaskService.GetTask(Id);
         }
+
+        users = await TaskService.GetUsers();
     }
 
     private async Task HandleValidSubmit()

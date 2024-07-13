@@ -1,15 +1,24 @@
 ﻿using Common.DTOs.Tasks;
+using Common.DTOs.Users;
 using System.Net.Http.Json;
 
 namespace Frontend.Services
-{        
+{
+    // TODO - rename all methods to include async at the end
     public class TaskService(HttpClient httpClient)
     {
         private readonly HttpClient _httpClient = httpClient;
 
-        public async Task<List<TaskDTO>> GetTasks()
+        public async Task<List<TaskDTO>> GetTasks(string? searchText)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<TaskDTO>>("api/tasks");
+            var request = "api/tasks";
+
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                request += $"?search={searchText}";
+            }
+
+            var result = await _httpClient.GetFromJsonAsync<List<TaskDTO>>(request);
 
             // TODO - error handling
             return result;
@@ -37,6 +46,25 @@ namespace Frontend.Services
         {
             await _httpClient.DeleteAsync($"api/tasks/{id}");
         }
-    }
 
+        public async Task AssignTask(int taskId, string userId)
+        {
+            await _httpClient.PostAsJsonAsync(
+                "api/tasks/assign",
+                new AssignTaskDto 
+                {
+                    TaskId = taskId,
+                    UserId = userId
+                });
+        }
+
+        // TODO - this can be put into a seperate service?
+        public async Task<List<UserDTO>> GetUsers()
+        {            
+            var result = await _httpClient.GetFromJsonAsync<List<UserDTO>>("api/users");
+
+            // TODO - error handling
+            return result;
+        }      
+    }
 }
