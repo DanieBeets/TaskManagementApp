@@ -1,5 +1,6 @@
 using Backend.Data;
 using Backend.Data.Models;
+using Backend.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,8 @@ namespace Backend
 
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddSignalR();
+            
             var app = builder.Build();
             
             if (app.Environment.IsDevelopment())
@@ -61,7 +64,9 @@ namespace Backend
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-            
+
+            app.MapHub<NotificationHub>("/notificationHub");
+
             app.MapControllers();
 
             // seed users and roles
