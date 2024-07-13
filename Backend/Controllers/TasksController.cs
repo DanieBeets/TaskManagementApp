@@ -120,5 +120,24 @@ namespace Backend.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}/assign")]
+        public async Task<IActionResult> AssignTask(int id, [FromBody] string userId)
+        {
+            var task = await _appDbContext.Tasks.FindAsync(id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            task.AssignedUserId = userId;
+
+            _appDbContext.Entry(task).State = EntityState.Modified;
+
+            await _appDbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
