@@ -1,6 +1,6 @@
 ﻿using Backend.Data;
 using Backend.Data.Models;
-using Backend.DTOs.Tasks;
+using Common.DTOs.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

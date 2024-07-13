@@ -1,4 +1,4 @@
-﻿namespace Backend.DTOs.Tasks
+﻿namespace Common.DTOs.Tasks
 {
     public class TaskDTO
     {

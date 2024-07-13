@@ -1,0 +1,48 @@
+﻿@page "/task/edit/{id:int}"
+@inject TaskService TaskService
+@inject NavigationManager Navigation
+
+<EditForm Model="task" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText id="title" @bind-Value="task.Title" />
+    <InputText id="description" @bind-Value="task.Description" />
+    <InputDate id="dueDate" @bind-Value="task.DueDate" />
+    <InputSelect id="priority" @bind-Value="task.Priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+    </InputSelect>
+    <InputSelect id="status" @bind-Value="task.Status">
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+    </InputSelect>
+    <button type="submit">Save</button>
+</EditForm>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private UpdateTaskDto task = new UpdateTaskDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != 0)
+        {
+            task = await TaskService.GetTask(Id);
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (Id == 0)
+        {
+            await TaskService.CreateTask(task);
+        }
+        else
+        {
+            await TaskService.UpdateTask(Id, task);
+        }
+        Navigation.NavigateTo("/");
+    }
+}
