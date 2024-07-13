@@ -40,6 +40,13 @@ namespace Frontend.Services
         public async Task UpdateTask(int id, UpdateTaskDTO ut)
         {
             await _httpClient.PutAsJsonAsync($"api/tasks/{id}", ut);
+
+            // TODO - Send email notification
+            /*
+            var task = await GetTask(taskId);
+            var user = await GetUser(task.AssignedUserId);
+            await _emailService.SendEmailAsync(user.Email, "Task Status Update", $"The status of your task {taskId} has been updated to {status}");
+            */
         }
 
         public async Task DeleteTask(int id)
@@ -56,6 +63,13 @@ namespace Frontend.Services
                     TaskId = taskId,
                     UserId = userId
                 });
+
+            
+            // TODO - Send email notification
+            /*
+            var user = await GetUser(userId);
+            await _emailService.SendEmailAsync(user.Email, "Task Assignment", $"You have been assigned a new task: {taskId}");
+            */
         }
 
         // TODO - this can be put into a seperate service?

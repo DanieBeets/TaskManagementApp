@@ -13,3 +13,5 @@ TODO
 
 # TODO
 - User integer for userIds - not strings - adapt Identity user Model
+- Email notifications
+- SignalR notifications
