@@ -6,7 +6,7 @@ namespace Backend
     {
         public static async Task InitializeAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            // NOTE - the initial admin user password should be changed after initial deployment for security reasons
+            // NOTE - security - the initial admin user credentials should be changed after initial deployment
             string adminEmail = "admin@example.com";
             string password = "Admin123!";
 
