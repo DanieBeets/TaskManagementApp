@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace Backend.Data.Models
+﻿namespace Backend.Data.Models
 {
     public class TaskItem
     {
@@ -8,7 +6,7 @@ namespace Backend.Data.Models
 
         public string Title { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public DateTime DueDate { get; set; }
 
@@ -16,8 +14,8 @@ namespace Backend.Data.Models
 
         public string Status { get; set; }
 
-        public string AssignedUserId { get; set; }
+        public int? AssignedUserId { get; set; }
 
-        public IdentityUser AssignedUser { get; set; }
+        public User? AssignedUser { get; set; }
     }
 }

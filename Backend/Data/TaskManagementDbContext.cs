@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data
 {
-    public class TaskManagementDbContext(DbContextOptions<TaskManagementDbContext> options) : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>(options)
+    public class TaskManagementDbContext(DbContextOptions<TaskManagementDbContext> options) : IdentityDbContext<User, IdentityRole<int>, int>(options)
     {
         public DbSet<TaskItem> Tasks { get; set; }
     }

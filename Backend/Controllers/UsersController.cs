@@ -20,10 +20,9 @@ namespace Backend.Controllers
                 .Users
                 .Select(u => new UserDTO
                 {
-                    Id = u.Id,
-                    // TODO - adapt identity to include user name and surname in user table, also adapt registration
-                    Name = u.Email ?? "No name"
-                    
+                    Id = u.Id,                    
+                    Name = u.Name,
+                    Surname = u.Surname                    
                 })
                 .ToListAsync();
 
