@@ -14,3 +14,6 @@ Update-Database
 ```
 Script-Migration -Context TaskManagementDbContext
 ```
+
+# TODO
+- Double check nullability of Data Models, API Models and API DTOs
