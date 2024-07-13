@@ -1,5 +1,4 @@
 ﻿using Backend.Data;
-using Backend.Data.Models;
 using Common.DTOs.Tasks;
 using Common.DTOs.Users;
 using Microsoft.AspNetCore.Mvc;
