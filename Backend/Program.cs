@@ -1,4 +1,5 @@
 using Backend.Data;
+using Backend.Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace Backend
             builder.Services.AddDbContext<AppDbContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("TaskManagementConnection")));
             
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            builder.Services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
                         
