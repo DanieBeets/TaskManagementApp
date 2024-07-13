@@ -1,5 +1,10 @@
 using Backend.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Backend
 {
@@ -9,11 +14,40 @@ namespace Backend
         {
             var builder = WebApplication.CreateBuilder(args);
             
-            builder.Services.AddDbContext<TaskManagementDbContext>(options =>options.UseSqlite(builder.Configuration.GetConnectionString("TaskManagementConnection")));
-            builder.Services.AddControllers();
+            builder.Services.AddDbContext<TaskManagementDbContext>(
+                options => options.UseSqlite(builder.Configuration.GetConnectionString("TaskManagementConnection")));
+            
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<TaskManagementDbContext>()
+                .AddDefaultTokenProviders();
+            
+            var jwtIssuer = builder.Configuration["Jwt:Issuer"]?.ToString() ?? throw new Exception("'Jwt:Issuer' is missing from the configuration file");
+            var jwtAudience = builder.Configuration["Jwt:Audience"]?.ToString() ?? throw new Exception("'Jwt:Audience' is missing from the configuration file");
+            var jwtKey = builder.Configuration["Jwt:Key"]?.ToString() ?? throw new Exception("'Jwt:Key' is missing from the configuration file");
 
-            builder.Services.AddControllers();            
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                };
+            });
+           
+            builder.Services.AddControllers();
+            
             builder.Services.AddEndpointsApiExplorer();
+
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -27,7 +61,7 @@ namespace Backend
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            
             app.MapControllers();
 
             app.Run();
