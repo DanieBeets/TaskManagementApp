@@ -13,10 +13,30 @@ namespace Backend.Controllers
         private readonly TaskManagementDbContext _appDbContext = appDbContext;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaskDTO>>> GetTasks()
+        public async Task<ActionResult<IEnumerable<TaskDTO>>> GetTasks(
+            [FromQuery] string search,
+            [FromQuery] string priority,
+            [FromQuery] string status)
         {
+            var query = _appDbContext.Tasks.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(t => t.Title.Contains(search) || t.Description.Contains(search));
+            }
+
+            if (!string.IsNullOrWhiteSpace(priority))
+            {
+                query = query.Where(t => t.Priority == priority);
+            }
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                query = query.Where(t => t.Status == status);
+            }
+
             var tasks = await
-                _appDbContext.Tasks
+                query
                 .Select(t => new TaskDTO
                 {
                     Id = t.Id,
