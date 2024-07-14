@@ -3,15 +3,8 @@
 A task management app in .NET Core 8.
 
 - /Backend - Backend API
-- /Frontend - Blazor WebAssebmly Frontend
+- /Frontend - Blazor WebAssembly Frontend
 
-# Building
-TODO
 
-# Running
-TODO
-
-# TODO
-- User integer for userIds - not strings - adapt Identity user Model
-- Email notifications
-- SignalR notifications
+# Disclaimer
+- I am still busy learning Blazor, for that reason the project is not complete yet.

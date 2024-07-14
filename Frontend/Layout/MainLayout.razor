@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization;
 @inject NotificationService NotificationService
 @inject AuthenticationService AuthenticationService
 @inject CustomAuthenticationStateProvider AuthenticationStateProvider
@@ -9,10 +10,7 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
+        @* TODO - have a look at BlazoredToasts! *@
         <div>
             @if (!string.IsNullOrEmpty(notificationMessage))
             {
@@ -20,7 +18,7 @@
             }
         </div>
 
-        @if (!IsAuthenticated)
+        @*@if (!IsAuthenticated)
         {
             <div class="auth-actions">
                 <NavLink href="/login" class="nav-link">Login</NavLink>
@@ -32,16 +30,21 @@
             <div class="auth-actions">
                 Not authenticated - TODO
             </div>
-        }
-        <div>
-            @if (!string.IsNullOrEmpty(notificationMessage))
-            {
-                <div class="alert alert-info">@notificationMessage</div>
-            }
-        </div>
-        <article class="content px-4">
-            @Body
-        </article>
+        } *@
+
+        <AuthorizeView>
+            <Authorized>
+                Hello, @context.User.Identity?.Name
+                <NavLink href="/signout" class="nav-link">Sign Out</NavLink>
+                <article class="content px-4">
+                    @Body
+                </article>
+            </Authorized>
+            <NotAuthorized>                
+                <NavLink href="/signin" class="nav-link">Sign In</NavLink>
+            </NotAuthorized>
+        </AuthorizeView>
+        
     </main>
 </div>
 
