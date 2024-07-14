@@ -16,6 +16,7 @@ namespace Backend
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var connectionString = builder.Configuration.GetConnectionString("TaskManagementConnection") ?? throw new Exception("'TaskManagementConnection' is missing from the configuration file");
             var jwtIssuer = builder.Configuration["Jwt:Issuer"]?.ToString() ?? throw new Exception("'Jwt:Issuer' is missing from the configuration file");
             var jwtAudience = builder.Configuration["Jwt:Audience"]?.ToString() ?? throw new Exception("'Jwt:Audience' is missing from the configuration file");
             var jwtKey = builder.Configuration["Jwt:Key"]?.ToString() ?? throw new Exception("'Jwt:Key' is missing from the configuration file");
@@ -23,7 +24,7 @@ namespace Backend
             builder.Services.AddScoped<AuditService>();
 
             builder.Services.AddDbContext<AppDbContext>(
-                options => options.UseSqlite(builder.Configuration.GetConnectionString("TaskManagementConnection")));
+                options => options.UseSqlite(connectionString));
             
             builder.Services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -78,7 +79,7 @@ namespace Backend
                 var services = scope.ServiceProvider;
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var roleManager = services.GetRequiredService<RoleManager<Role>>();
-                RoleInitializer.InitializeAsync(userManager, roleManager).Wait();
+                IdentityDataSeeder.SeedAsync(userManager, roleManager).Wait();
             }
 
             app.Run();

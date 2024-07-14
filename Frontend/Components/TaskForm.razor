@@ -24,7 +24,7 @@
     <select id="assignedUser" @bind="task.AssignedUserId">
         @foreach (var user in users)
         {
-            <option value="@user.Id">@user.Name</option>
+            <option value="@user.Id">@user.FirstName @user.LastName"</option>
         }
     </select>
     <button type="submit">Save</button>

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Data.Models
 {
-    public class Role : IdentityRole<int>
-    {
-
+    public sealed class Role : IdentityRole<int>
+    {        
+        [MaxLength(250)]
+        public required string Description { get; set; }
     }
 }

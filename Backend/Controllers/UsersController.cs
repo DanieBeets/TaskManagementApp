@@ -21,8 +21,8 @@ namespace Backend.Controllers
                 .Select(u => new UserDTO
                 {
                     Id = u.Id,                    
-                    Name = u.Name,
-                    Surname = u.Surname                    
+                    FirstName = u.FirstName,
+                    LastName = u.LastName
                 })
                 .ToListAsync();
 
