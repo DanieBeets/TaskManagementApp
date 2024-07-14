@@ -6,18 +6,31 @@
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject CustomAuthenticationStateProvider AuthStateProvider
 
-<EditForm Model="signInDTO" OnValidSubmit="HandleLogin">
+<EditForm Model="signInDTO" OnValidSubmit="HandleSignIn">
     <DataAnnotationsValidator />
     <ValidationSummary />
+   @*
     <InputText id="email" @bind-Value="signInDTO.Email" />
     <InputText id="password" type="password" @bind-Value="signInDTO.Password" />
     <button type="submit">Login</button>
+    *@
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="@signInDTO.Email" />
+        <ValidationMessage For="@(() => signInDTO.Email)" />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <InputText id="password" type="password" class="form-control" @bind-Value="@signInDTO.Password" />
+        <ValidationMessage For="@(() => signInDTO.Password)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Sign In</button>
 </EditForm>
 
 @code {
     private SignInDTO signInDTO = new SignInDTO();
 
-    private async Task HandleLogin()
+    private async Task HandleSignIn()
     {
         var token = await AuthenticationService.SignIn(signInDTO);
         

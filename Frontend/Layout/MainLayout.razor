@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject NotificationService NotificationService
+@inject AuthenticationService AuthenticationService
+@inject CustomAuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page">
     <div class="sidebar">
@@ -18,33 +20,35 @@
             }
         </div>
 
+        @if (!IsAuthenticated)
+        {
+            <div class="auth-actions">
+                <NavLink href="/login" class="nav-link">Login</NavLink>
+                <NavLink href="/register" class="nav-link">Register</NavLink>
+            </div>
+        }
+        else
+        {
+            <div class="auth-actions">
+                Not authenticated - TODO
+            </div>
+        }
+        <div>
+            @if (!string.IsNullOrEmpty(notificationMessage))
+            {
+                <div class="alert alert-info">@notificationMessage</div>
+            }
+        </div>
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-3">
-            <NavMenu />
-        </div>
-        <div class="col-md-9">
-            <div>
-                @if (!string.IsNullOrEmpty(notificationMessage))
-                {
-                    <div class="alert alert-info">@notificationMessage</div>
-                }
-            </div>
-            <main>
-                @Body
-            </main>
-        </div>
-    </div>
-</div>
-
 @code {
     private string notificationMessage = string.Empty;
+    
+    private bool IsAuthenticated;
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,4 +60,25 @@
 
         await NotificationService.StartAsync();
     }
+
+    // private AuthenticationState authState;
+    // private bool IsAuthenticated;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     authState = await AuthStateProvider.GetAuthenticationStateAsync();
+    //     IsAuthenticated = authState.User.Identity.IsAuthenticated;
+    //     AuthStateProvider.AuthenticationStateChanged += HandleAuthenticationStateChanged;
+    // }
+
+    // public void Dispose()
+    // {
+    //     AuthStateProvider.AuthenticationStateChanged -= HandleAuthenticationStateChanged;
+    // }
+
+    // private void HandleAuthenticationStateChanged(Task<AuthenticationState> task)
+    // {
+    //     IsAuthenticated = task.Result.User.Identity.IsAuthenticated;
+    //     StateHasChanged();
+    // }
 }
